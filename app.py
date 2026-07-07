@@ -107,12 +107,12 @@ def health():
 
 @app.route("/")
 def index():
-    return send_from_directory("../static", "index.html")
+    return send_from_directory("static", "index.html")
 
 @app.route("/<path:path>")
 def serve_files(path):
     if "." in path:
-        return send_from_directory("../static", path)
+        return send_from_directory("static", path)
     return jsonify({"code": 0, "msg": "ok"})
 
 if __name__ == "__main__":
