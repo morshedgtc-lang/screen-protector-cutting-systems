@@ -155,12 +155,13 @@ def serve_plt_model(filename):
                 return send_from_directory(base, fn, as_attachment=False)
     return jsonify({"code": 1, "msg": "plt not found: " + filename}), 404
 
+@app.errorhandler(404)
 @app.route("/<path:path>")
-def serve_files(path):
-    file_path = os.path.join(STATIC_DIR, path)
-    if os.path.isfile(file_path):
-        return send_from_directory(STATIC_DIR, path)
-    # SPA fallback: serve index.html for non-file paths
+def spa_or_static(path=None):
+    if path:
+        file_path = os.path.join(STATIC_DIR, path)
+        if os.path.isfile(file_path):
+            return send_from_directory(STATIC_DIR, path)
     index_path = os.path.join(STATIC_DIR, "index.html")
     if os.path.isfile(index_path):
         return send_from_directory(STATIC_DIR, "index.html")
