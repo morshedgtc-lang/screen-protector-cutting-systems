@@ -45,7 +45,8 @@ SEED_MODELS = [
     {"id":17,"seriesId":5,"modelName":"Galaxy S23","pltFile":"s23.plt","pltUrl":"/oss/model/s23.plt"},
 ]
 
-@app.route("/api/datalist/user", "/datalist/user", methods=["GET", "POST"])
+@app.route("/api/datalist/user", methods=["GET", "POST"])
+@app.route("/datalist/user", methods=["GET", "POST"])
 def user_info():
     return jsonify({
         "code": 0, "msg": "ok",
@@ -71,33 +72,39 @@ def user_info():
         }
     })
 
-@app.route("/api/datalist/category", "/datalist/category", methods=["GET", "POST"])
+@app.route("/api/datalist/category", methods=["GET", "POST"])
+@app.route("/datalist/category", methods=["GET", "POST"])
 def get_categories():
     return jsonify(SEED_CATEGORIES)
 
-@app.route("/api/datalist/brand", "/datalist/brand", methods=["POST"])
+@app.route("/api/datalist/brand", methods=["POST"])
+@app.route("/datalist/brand", methods=["POST"])
 def get_brands():
     return jsonify(SEED_BRANDS)
 
-@app.route("/api/datalist/series", "/datalist/series", methods=["POST"])
+@app.route("/api/datalist/series", methods=["POST"])
+@app.route("/datalist/series", methods=["POST"])
 def get_series():
     data = request.get_json(silent=True) or {}
     brand_id = data.get("brandId", 0)
     filtered = [s for s in SEED_SERIES if s["brandId"] == brand_id] if brand_id else SEED_SERIES
     return jsonify(filtered)
 
-@app.route("/api/datalist/model", "/datalist/model", methods=["POST"])
+@app.route("/api/datalist/model", methods=["POST"])
+@app.route("/datalist/model", methods=["POST"])
 def get_models():
     data = request.get_json(silent=True) or {}
     series_id = data.get("seriesId", 0)
     filtered = [m for m in SEED_MODELS if m["seriesId"] == series_id] if series_id else SEED_MODELS
     return jsonify(filtered)
 
-@app.route("/api/phone/pltfile", "/phone/pltfile", methods=["POST"])
+@app.route("/api/phone/pltfile", methods=["POST"])
+@app.route("/phone/pltfile", methods=["POST"])
 def get_plt():
     return jsonify({"code": 0, "msg": "ok", "data": {"pltUrl": "/oss/model/generic.plt"}})
 
-@app.route("/api/cutterMacTest", "/cutterMacTest", methods=["GET", "POST"])
+@app.route("/api/cutterMacTest", methods=["GET", "POST"])
+@app.route("/cutterMacTest", methods=["GET", "POST"])
 def cutter_mac_test():
     return jsonify({"code": 0, "msg": "ok"})
 
