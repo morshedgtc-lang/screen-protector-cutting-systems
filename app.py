@@ -134,6 +134,20 @@ def serve_plt(filename):
                 return send_from_directory(base, fn, as_attachment=False)
     return jsonify({"code": 1, "msg": "plt not found: " + filename}), 404
 
+# Also serve PLT at /model/<file> (matches aliyuncs OSS path the STOCK app expects)
+@app.route("/model/<path:filename>")
+def serve_plt_model(filename):
+    base = _os2.path.join(OSS_DIR, "model")
+    target = _os2.path.join(base, filename)
+    if _os2.path.isfile(target):
+        return send_from_directory(base, filename, as_attachment=False)
+    lname = filename.lower()
+    if _os2.path.isdir(base):
+        for fn in _os2.listdir(base):
+            if fn.lower() == lname:
+                return send_from_directory(base, fn, as_attachment=False)
+    return jsonify({"code": 1, "msg": "plt not found: " + filename}), 404
+
 @app.route("/<path:path>")
 def serve_files(path):
     if "." in path:
