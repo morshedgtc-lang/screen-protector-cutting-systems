@@ -1,0 +1,23 @@
+node_modules/
+.vite/
+.gstack/
+__pycache__/
+*.pyc
+*.log
+*.db
+*.rar
+*.zip
+.DS_Store
+**/node_modules/
+Carlcare Portal API Research & Documentation Agent/
+carlcare-api/
+carlcare-appeal-manager/
+carlcare-dashboard/
+carlcare-imei/
+infinix tecno itel unlock appeal check system/
+project 1/
+gstack-main/
+gstack/
+railway-app/
+plt_cache/
+PrinterServer/
