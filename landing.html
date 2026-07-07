@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SATelecom CutOS</title>
+<meta name="theme-color" content="#0f172a">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0f1117;color:#e8e8e8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.container{max-width:420px;width:100%;text-align:center}
+.logo{display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;background:rgba(99,102,241,0.12);border-radius:18px;margin-bottom:16px}
+.logo svg{width:36px;height:36px;color:#818cf8}
+h1{font-size:22px;font-weight:700;margin-bottom:4px}
+.sub{color:#6b7280;font-size:13px;margin-bottom:24px}
+.card{background:#1a1d2e;border:1px solid #2a2d3e;border-radius:14px;padding:16px;margin-bottom:12px;text-align:left;display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;transition:background .15s}
+.card:active{background:#232642}
+.card-icon{flex-shrink:0;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+.card-icon svg{width:22px;height:22px}
+.card-text{flex:1;min-width:0}
+.card-title{font-size:15px;font-weight:600}
+.card-desc{font-size:12px;color:#6b7280;margin-top:1px}
+.badge{font-size:11px;color:#6b7280;flex-shrink:0}
+.btn{display:inline-flex;align-items:center;gap:6px;background:#2a2d3e;border:1px solid #3a3d4e;color:#e8e8e8;padding:10px 20px;border-radius:10px;font-size:14px;font-weight:500;text-decoration:none;transition:background .15s;margin-top:8px}
+.btn:active{background:#3a3d4e}
+.footer{margin-top:24px;font-size:12px;color:#4b5563}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+  </div>
+  <h1>SATelecom CutOS</h1>
+  <p class="sub">Screen protector cutting machine system</p>
+
+  <a class="card" href="/downloads">
+    <div class="card-icon" style="background:rgba(99,102,241,0.15);color:#818cf8">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    </div>
+    <div class="card-text">
+      <div class="card-title">Download APKs</div>
+      <div class="card-desc">Install cutting software on the machine</div>
+    </div>
+    <span class="badge">4 files</span>
+  </a>
+
+  <a class="card" href="/terminal">
+    <div class="card-icon" style="background:rgba(34,197,94,0.15);color:#22c55e">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+    </div>
+    <div class="card-text">
+      <div class="card-title">Machine Terminal</div>
+      <div class="card-desc">Control the cutting machine remotely</div>
+    </div>
+    <span class="badge">WebSocket</span>
+  </a>
+
+  <a class="card" href="/login">
+    <div class="card-icon" style="background:rgba(245,158,11,0.15);color:#f59e0b">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    </div>
+    <div class="card-text">
+      <div class="card-title">Admin Dashboard</div>
+      <div class="card-desc">Manage machines, users, and settings</div>
+    </div>
+    <span class="badge">Login</span>
+  </a>
+
+  <a class="btn" href="/downloads">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Get Started
+  </a>
+
+  <p class="footer">SA Telecom &mdash; v1.0</p>
+</div>
+</body>
+</html>

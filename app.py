@@ -249,8 +249,17 @@ def cutter_mac_test():
 def health():
     return jsonify({"status": "ok", "time": datetime.datetime.now().isoformat()})
 
+STATIC_HTML_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "frontend", "public")
+if not os.path.isdir(STATIC_HTML_DIR):
+    STATIC_HTML_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+
 @app.route("/")
 def index():
+    # Serve a lightweight landing page for the machine's browser
+    landing = os.path.join(os.path.dirname(os.path.abspath(__file__)), "landing.html")
+    if os.path.isfile(landing):
+        return send_from_directory(os.path.dirname(os.path.abspath(__file__)), "landing.html")
+    # Fallback: serve the React PWA
     if os.path.isfile(os.path.join(STATIC_DIR, "index.html")):
         return send_from_directory(STATIC_DIR, "index.html")
     return ''
