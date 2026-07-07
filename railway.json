@@ -1,0 +1,11 @@
+{
+  "build": {
+    "builder": "static",
+    "buildCommand": null
+  },
+  "deploy": {
+    "static": {
+      "directory": "screen-protector cutting systems/cutting-tools-site"
+    }
+  }
+}
