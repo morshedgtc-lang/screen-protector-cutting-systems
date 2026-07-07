@@ -9,16 +9,20 @@ const APPS = [
   { url: '/filemanager.apk', icon: FolderOpen, label: 'File Manager', desc: 'File manager for browsing and managing files on the machine. Install after launcher.', size: '8.9 MB', color: 'orange' },
 ]
 
-export default function DownloadsPage({ token }: { token: string }) {
+export default function DownloadsPage({ token, publicView }: { token?: string; publicView?: boolean }) {
   const [downloads, setDownloads] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (publicView || !token) {
+      setLoading(false)
+      return
+    }
     fetch('/api/v1/downloads', { headers: { Authorization: `Bearer ${token}` } })
       .then((r) => r.json())
       .then(setDownloads)
       .finally(() => setLoading(false))
-  }, [token])
+  }, [token, publicView])
 
   const columns = [
     { key: 'id', label: 'ID' },

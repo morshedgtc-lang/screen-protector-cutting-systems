@@ -48,9 +48,12 @@ function App() {
     }
   }, [token])
 
-  // Machine terminal is public (no auth required)
+  // Public pages (no auth required)
   if (window.location.pathname === '/terminal') {
     return <MachineTerminal />
+  }
+  if (window.location.pathname === '/downloads') {
+    return <DownloadsPage token={token || ''} publicView />
   }
 
   if (!token || !user) {
