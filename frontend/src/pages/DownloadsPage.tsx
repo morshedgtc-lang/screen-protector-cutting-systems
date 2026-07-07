@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Download, Smartphone, Globe, Wifi, FolderOpen, Grid } from 'lucide-react'
+import { Download, Smartphone, Globe, Wifi, FolderOpen, Grid, Printer } from 'lucide-react'
 import DataTable from '../components/DataTable'
 
 const APPS = [
@@ -53,8 +53,21 @@ export default function DownloadsPage({ token, publicView }: { token?: string; p
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-1">Downloads</h2>
-      <p className="text-sm text-gray-500 mb-6">Firmware, software, and template downloads</p>
+      {publicView && (
+        <div className="flex items-center gap-3 mb-6">
+          <Printer className="text-indigo-400" size={28} />
+          <div>
+            <h2 className="text-xl font-bold">SATelecom CutOS</h2>
+            <p className="text-xs text-gray-500">Download APK files to install on the cutting machine</p>
+          </div>
+        </div>
+      )}
+      {!publicView && (
+        <>
+          <h2 className="text-2xl font-bold mb-1">Downloads</h2>
+          <p className="text-sm text-gray-500 mb-6">Firmware, software, and template downloads</p>
+        </>
+      )}
 
       <div className="space-y-4 mb-8">
         {APPS.map((app) => {
@@ -82,9 +95,11 @@ export default function DownloadsPage({ token, publicView }: { token?: string; p
         })}
       </div>
 
-      <div className="bg-[#1e2139] rounded-xl border border-[#2a2d3e] p-4">
-        <DataTable columns={columns} data={downloads} loading={loading} />
-      </div>
+      {!publicView && (
+        <div className="bg-[#1e2139] rounded-xl border border-[#2a2d3e] p-4">
+          <DataTable columns={columns} data={downloads} loading={loading} />
+        </div>
+      )}
     </div>
   )
 }
