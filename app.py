@@ -26,26 +26,26 @@ SEED_SERIES = [
     {"id":7,"brandId":4,"name":"14"},
 ]
 SEED_MODELS = [
-    {"id":1,"seriesId":1,"modelName":"iPhone 15 Pro Max","pltFile":"iphone15promax.plt","pltUrl":"/model/iphone15promax.plt"},
-    {"id":2,"seriesId":1,"modelName":"iPhone 15 Pro","pltFile":"iphone15pro.plt","pltUrl":"/model/iphone15pro.plt"},
-    {"id":3,"seriesId":1,"modelName":"iPhone 15 Plus","pltFile":"iphone15plus.plt","pltUrl":"/model/iphone15plus.plt"},
-    {"id":4,"seriesId":1,"modelName":"iPhone 15","pltFile":"iphone15.plt","pltUrl":"/model/iphone15.plt"},
-    {"id":5,"seriesId":2,"modelName":"iPhone 14 Pro Max","pltFile":"iphone14promax.plt","pltUrl":"/model/iphone14promax.plt"},
-    {"id":6,"seriesId":2,"modelName":"iPhone 14 Pro","pltFile":"iphone14pro.plt","pltUrl":"/model/iphone14pro.plt"},
-    {"id":7,"seriesId":2,"modelName":"iPhone 14 Plus","pltFile":"iphone14plus.plt","pltUrl":"/model/iphone14plus.plt"},
-    {"id":8,"seriesId":2,"modelName":"iPhone 14","pltFile":"iphone14.plt","pltUrl":"/model/iphone14.plt"},
-    {"id":9,"seriesId":3,"modelName":"iPhone 13 Pro Max","pltFile":"iphone13promax.plt","pltUrl":"/model/iphone13promax.plt"},
-    {"id":10,"seriesId":3,"modelName":"iPhone 13 Pro","pltFile":"iphone13pro.plt","pltUrl":"/model/iphone13pro.plt"},
-    {"id":11,"seriesId":3,"modelName":"iPhone 13","pltFile":"iphone13.plt","pltUrl":"/model/iphone13.plt"},
-    {"id":12,"seriesId":4,"modelName":"Galaxy S24 Ultra","pltFile":"s24ultra.plt","pltUrl":"/model/s24ultra.plt"},
-    {"id":13,"seriesId":4,"modelName":"Galaxy S24 Plus","pltFile":"s24plus.plt","pltUrl":"/model/s24plus.plt"},
-    {"id":14,"seriesId":4,"modelName":"Galaxy S24","pltFile":"s24.plt","pltUrl":"/model/s24.plt"},
-    {"id":15,"seriesId":5,"modelName":"Galaxy S23 Ultra","pltFile":"s23ultra.plt","pltUrl":"/model/s23ultra.plt"},
-    {"id":16,"seriesId":5,"modelName":"Galaxy S23 Plus","pltFile":"s23plus.plt","pltUrl":"/model/s23plus.plt"},
-    {"id":17,"seriesId":5,"modelName":"Galaxy S23","pltFile":"s23.plt","pltUrl":"/model/s23.plt"},
+    {"id":1,"seriesId":1,"modelName":"iPhone 15 Pro Max","pltFile":"iphone15promax.plt","pltUrl":"/oss/model/iphone15promax.plt"},
+    {"id":2,"seriesId":1,"modelName":"iPhone 15 Pro","pltFile":"iphone15pro.plt","pltUrl":"/oss/model/iphone15pro.plt"},
+    {"id":3,"seriesId":1,"modelName":"iPhone 15 Plus","pltFile":"iphone15plus.plt","pltUrl":"/oss/model/iphone15plus.plt"},
+    {"id":4,"seriesId":1,"modelName":"iPhone 15","pltFile":"iphone15.plt","pltUrl":"/oss/model/iphone15.plt"},
+    {"id":5,"seriesId":2,"modelName":"iPhone 14 Pro Max","pltFile":"iphone14promax.plt","pltUrl":"/oss/model/iphone14promax.plt"},
+    {"id":6,"seriesId":2,"modelName":"iPhone 14 Pro","pltFile":"iphone14pro.plt","pltUrl":"/oss/model/iphone14pro.plt"},
+    {"id":7,"seriesId":2,"modelName":"iPhone 14 Plus","pltFile":"iphone14plus.plt","pltUrl":"/oss/model/iphone14plus.plt"},
+    {"id":8,"seriesId":2,"modelName":"iPhone 14","pltFile":"iphone14.plt","pltUrl":"/oss/model/iphone14.plt"},
+    {"id":9,"seriesId":3,"modelName":"iPhone 13 Pro Max","pltFile":"iphone13promax.plt","pltUrl":"/oss/model/iphone13promax.plt"},
+    {"id":10,"seriesId":3,"modelName":"iPhone 13 Pro","pltFile":"iphone13pro.plt","pltUrl":"/oss/model/iphone13pro.plt"},
+    {"id":11,"seriesId":3,"modelName":"iPhone 13","pltFile":"iphone13.plt","pltUrl":"/oss/model/iphone13.plt"},
+    {"id":12,"seriesId":4,"modelName":"Galaxy S24 Ultra","pltFile":"s24ultra.plt","pltUrl":"/oss/model/s24ultra.plt"},
+    {"id":13,"seriesId":4,"modelName":"Galaxy S24 Plus","pltFile":"s24plus.plt","pltUrl":"/oss/model/s24plus.plt"},
+    {"id":14,"seriesId":4,"modelName":"Galaxy S24","pltFile":"s24.plt","pltUrl":"/oss/model/s24.plt"},
+    {"id":15,"seriesId":5,"modelName":"Galaxy S23 Ultra","pltFile":"s23ultra.plt","pltUrl":"/oss/model/s23ultra.plt"},
+    {"id":16,"seriesId":5,"modelName":"Galaxy S23 Plus","pltFile":"s23plus.plt","pltUrl":"/oss/model/s23plus.plt"},
+    {"id":17,"seriesId":5,"modelName":"Galaxy S23","pltFile":"s23.plt","pltUrl":"/oss/model/s23.plt"},
 ]
 
-@app.route("/api/datalist/user", methods=["GET", "POST"])
+@app.route("/api/datalist/user", "/datalist/user", methods=["GET", "POST"])
 def user_info():
     return jsonify({
         "code": 0, "msg": "ok",
@@ -71,33 +71,33 @@ def user_info():
         }
     })
 
-@app.route("/api/datalist/category", methods=["GET", "POST"])
+@app.route("/api/datalist/category", "/datalist/category", methods=["GET", "POST"])
 def get_categories():
     return jsonify(SEED_CATEGORIES)
 
-@app.route("/api/datalist/brand", methods=["POST"])
+@app.route("/api/datalist/brand", "/datalist/brand", methods=["POST"])
 def get_brands():
     return jsonify(SEED_BRANDS)
 
-@app.route("/api/datalist/series", methods=["POST"])
+@app.route("/api/datalist/series", "/datalist/series", methods=["POST"])
 def get_series():
     data = request.get_json(silent=True) or {}
     brand_id = data.get("brandId", 0)
     filtered = [s for s in SEED_SERIES if s["brandId"] == brand_id] if brand_id else SEED_SERIES
     return jsonify(filtered)
 
-@app.route("/api/datalist/model", methods=["POST"])
+@app.route("/api/datalist/model", "/datalist/model", methods=["POST"])
 def get_models():
     data = request.get_json(silent=True) or {}
     series_id = data.get("seriesId", 0)
     filtered = [m for m in SEED_MODELS if m["seriesId"] == series_id] if series_id else SEED_MODELS
     return jsonify(filtered)
 
-@app.route("/api/phone/pltfile", methods=["POST"])
+@app.route("/api/phone/pltfile", "/phone/pltfile", methods=["POST"])
 def get_plt():
-    return jsonify({"code": 0, "msg": "ok", "data": {"pltUrl": "/model/generic.plt"}})
+    return jsonify({"code": 0, "msg": "ok", "data": {"pltUrl": "/oss/model/generic.plt"}})
 
-@app.route("/api/cutterMacTest", methods=["GET", "POST"])
+@app.route("/api/cutterMacTest", "/cutterMacTest", methods=["GET", "POST"])
 def cutter_mac_test():
     return jsonify({"code": 0, "msg": "ok"})
 
@@ -108,6 +108,24 @@ def health():
 @app.route("/")
 def index():
     return send_from_directory("static", "index.html")
+
+# Serve PLT cutting files (mirrors aliyuncs OSS path the app expects)
+import os as _os2
+OSS_DIR = _os2.path.join(_os2.path.dirname(_os2.path.abspath(__file__)), "oss")
+@app.route("/oss/model/<path:filename>")
+def serve_plt(filename):
+    # try exact, then case-insensitive match (Android filenames vary)
+    base = _os2.path.join(OSS_DIR, "model")
+    target = _os2.path.join(base, filename)
+    if _os2.path.isfile(target):
+        return send_from_directory(_os2.path.join(OSS_DIR, "model"), filename, as_attachment=False)
+    # case-insensitive fallback
+    lname = filename.lower()
+    if _os2.path.isdir(base):
+        for fn in _os2.listdir(base):
+            if fn.lower() == lname:
+                return send_from_directory(base, fn, as_attachment=False)
+    return jsonify({"code": 1, "msg": "plt not found: " + filename}), 404
 
 @app.route("/<path:path>")
 def serve_files(path):
