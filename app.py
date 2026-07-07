@@ -1,7 +1,12 @@
 import os, json, datetime
 from flask import Flask, request, jsonify, send_from_directory
 
-app = Flask(__name__, static_folder="static", static_url_path="")
+STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "frontend", "dist")
+if not os.path.isdir(STATIC_DIR):
+    STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+os.makedirs(STATIC_DIR, exist_ok=True)
+
+app = Flask(__name__, static_folder=STATIC_DIR, static_url_path="")
 
 SEED_CATEGORIES = [
     {"id":1,"name":"Phone","chn":"手机","icon":"","sort":1,"status":"A"},
@@ -114,7 +119,9 @@ def health():
 
 @app.route("/")
 def index():
-    return send_from_directory("static", "index.html")
+    if os.path.isfile(os.path.join(STATIC_DIR, "index.html")):
+        return send_from_directory(STATIC_DIR, "index.html")
+    return ''
 
 # Serve PLT cutting files (mirrors aliyuncs OSS path the app expects)
 import os as _os2
@@ -150,8 +157,13 @@ def serve_plt_model(filename):
 
 @app.route("/<path:path>")
 def serve_files(path):
-    if "." in path:
-        return send_from_directory("static", path)
+    file_path = os.path.join(STATIC_DIR, path)
+    if os.path.isfile(file_path):
+        return send_from_directory(STATIC_DIR, path)
+    # SPA fallback: serve index.html for non-file paths
+    index_path = os.path.join(STATIC_DIR, "index.html")
+    if os.path.isfile(index_path):
+        return send_from_directory(STATIC_DIR, "index.html")
     return jsonify({"code": 0, "msg": "ok"})
 
 # ---------- APK backup / upload (SA Telecom) ----------
