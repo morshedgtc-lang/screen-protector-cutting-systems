@@ -1,5 +1,17 @@
-import os, json, datetime
+import os, json, datetime, hashlib, secrets
 from flask import Flask, request, jsonify, send_from_directory
+
+# ---------- CutOS v1 API mock (admin only) ----------
+ADMIN_EMAIL = "admin@satelecom.com"
+ADMIN_PASS = "admin"
+ADMIN_NAME = "Admin"
+ADMIN_USER = {"id": 1, "email": ADMIN_EMAIL, "name": ADMIN_NAME, "role": "admin"}
+_tokens = {}  # token -> user
+
+def _get_user_from_token():
+    auth = request.headers.get("Authorization", "")
+    token = auth.replace("Bearer ", "") if auth.startswith("Bearer ") else None
+    return _tokens.get(token) if token else None
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "frontend", "dist")
 if not os.path.isdir(STATIC_DIR):
@@ -8,6 +20,115 @@ os.makedirs(STATIC_DIR, exist_ok=True)
 
 app = Flask(__name__, static_folder=STATIC_DIR, static_url_path="")
 
+# ---------- CutOS v1 API endpoints (mock) ----------
+@app.route("/api/v1/auth/register", methods=["POST"])
+def api_register():
+    return jsonify({"access_token": secrets.token_hex(32), "refresh_token": secrets.token_hex(32), "user": ADMIN_USER})
+
+@app.route("/api/v1/auth/login", methods=["POST"])
+def api_login():
+    data = request.get_json(silent=True) or {}
+    if data.get("email") == ADMIN_EMAIL and data.get("password") == ADMIN_PASS:
+        token = secrets.token_hex(32)
+        _tokens[token] = ADMIN_USER
+        return jsonify({"access_token": token, "refresh_token": secrets.token_hex(32), "user": ADMIN_USER})
+    return jsonify({"detail": "Invalid email or password"}), 401
+
+@app.route("/api/v1/auth/refresh", methods=["POST"])
+def api_refresh():
+    token = secrets.token_hex(32)
+    _tokens[token] = ADMIN_USER
+    return jsonify({"access_token": token, "refresh_token": secrets.token_hex(32)})
+
+@app.route("/api/v1/auth/me", methods=["GET"])
+def api_me():
+    user = _get_user_from_token()
+    if user:
+        return jsonify(user)
+    return jsonify({"detail": "Not authenticated"}), 401
+
+@app.route("/api/v1/users", methods=["GET"])
+def api_users():
+    if not _get_user_from_token():
+        return jsonify({"detail": "Not authenticated"}), 401
+    return jsonify([ADMIN_USER])
+
+@app.route("/api/v1/users/<int:uid>", methods=["GET"])
+def api_user(uid):
+    if not _get_user_from_token():
+        return jsonify({"detail": "Not authenticated"}), 401
+    return jsonify(ADMIN_USER)
+
+@app.route("/api/v1/machines", methods=["GET"])
+def api_machines():
+    if not _get_user_from_token():
+        return jsonify({"detail": "Not authenticated"}), 401
+    return jsonify([])
+
+@app.route("/api/v1/jobs", methods=["GET"])
+def api_jobs():
+    if not _get_user_from_token():
+        return jsonify({"detail": "Not authenticated"}), 401
+    return jsonify([])
+
+@app.route("/api/v1/templates", methods=["GET"])
+def api_templates():
+    if not _get_user_from_token():
+        return jsonify({"detail": "Not authenticated"}), 401
+    return jsonify([])
+
+@app.route("/api/v1/subscriptions", methods=["GET"])
+def api_subscriptions():
+    if not _get_user_from_token():
+        return jsonify({"detail": "Not authenticated"}), 401
+    return jsonify([])
+
+@app.route("/api/v1/machine-types", methods=["GET"])
+def api_machine_types():
+    if not _get_user_from_token():
+        return jsonify({"detail": "Not authenticated"}), 401
+    return jsonify([])
+
+@app.route("/api/v1/logs", methods=["GET"])
+def api_logs():
+    if not _get_user_from_token():
+        return jsonify({"detail": "Not authenticated"}), 401
+    return jsonify([])
+
+@app.route("/api/v1/updates", methods=["GET"])
+def api_updates():
+    if not _get_user_from_token():
+        return jsonify({"detail": "Not authenticated"}), 401
+    return jsonify([])
+
+@app.route("/api/v1/downloads", methods=["GET"])
+def api_downloads():
+    if not _get_user_from_token():
+        return jsonify({"detail": "Not authenticated"}), 401
+    return jsonify([
+        {"id": 1, "name": "CutOS Terminal (Cloud)", "url": "/CutOS-Terminal-Cloud.apk", "version": "1.0", "size": 8038187},
+        {"id": 2, "name": "CutOS Terminal (Local)", "url": "/CutOS-Terminal-Local.apk", "version": "1.0", "size": 8038225},
+        {"id": 3, "name": "Launcher", "url": "/launcher.apk", "version": "1.0", "size": 1024000},
+        {"id": 4, "name": "File Manager", "url": "/filemanager.apk", "version": "1.0", "size": 2048000},
+    ])
+
+@app.route("/api/v1/analytics/dashboard", methods=["GET"])
+def api_dashboard():
+    if not _get_user_from_token():
+        return jsonify({"detail": "Not authenticated"}), 401
+    return jsonify({
+        "total_machines": 1, "active_machines": 0, "total_jobs": 0,
+        "today_jobs": 0, "total_templates": 0, "active_subscriptions": 0,
+        "machines": [], "recent_jobs": [],
+    })
+
+@app.route("/api/v1/brands", methods=["GET"])
+def api_brands():
+    if not _get_user_from_token():
+        return jsonify({"detail": "Not authenticated"}), 401
+    return jsonify(SEED_BRANDS)
+
+# ---------- Cloud API emulator (cutting machine) ----------
 SEED_CATEGORIES = [
     {"id":1,"name":"Phone","chn":"手机","icon":"","sort":1,"status":"A"},
     {"id":2,"name":"Watch","chn":"手表","icon":"","sort":2,"status":"A"},
